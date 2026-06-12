@@ -42,9 +42,9 @@ class HalaqaRepository {
 
   // ----- الطلاب -----
 
-  Future<void> addStudent(Halaqa halaqa, String name, {int? age}) async {
+  Future<void> addStudent(Halaqa halaqa, String name, {String? grade}) async {
     halaqa.students.add(
-      Student(id: IdGenerator.newId(), name: name.trim(), age: age),
+      Student(id: IdGenerator.newId(), name: name.trim(), grade: grade),
     );
     await halaqa.save();
   }
@@ -53,12 +53,12 @@ class HalaqaRepository {
     Halaqa halaqa,
     String studentId, {
     required String name,
-    int? age,
+    String? grade,
   }) async {
     for (final s in halaqa.students) {
       if (s.id == studentId) {
         s.name = name.trim();
-        s.age = age;
+        s.grade = grade;
         break;
       }
     }

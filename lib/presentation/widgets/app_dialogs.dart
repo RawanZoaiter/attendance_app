@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import '../../core/constants/grades.dart';
 
 /// نتيجة حوار بيانات الطالبة.
 class StudentInput {
   final String name;
-  final int? age;
-  const StudentInput(this.name, this.age);
+  final String? grade;
+  const StudentInput(this.name, this.grade);
 }
 
 /// حوارات مشتركة: إدخال نص + بيانات طالبة + تأكيد حذف.
 class AppDialogs {
   AppDialogs._();
 
-  /// حوار إدخال اسم الطالبة وعمرها (للإضافة أو التعديل).
+  /// حوار إدخال اسم الطالبة وصفّها (للإضافة أو التعديل).
   static Future<StudentInput?> student(
     BuildContext context, {
     String? initialName,
-    int? initialAge,
+    String? initialGrade,
     String title = 'إضافة طالبة',
     String confirmText = 'إضافة',
   }) {
     final nameController = TextEditingController(text: initialName);
-    final ageController =
-        TextEditingController(text: initialAge?.toString() ?? '');
+    String? grade = kGrades.contains(initialGrade) ? initialGrade : null;
     return showDialog<StudentInput>(
       context: context,
       builder: (ctx) {
         void submit() {
           final name = nameController.text.trim();
           if (name.isEmpty) return;
-          final age = int.tryParse(ageController.text.trim());
-          Navigator.pop(ctx, StudentInput(name, age));
+          Navigator.pop(ctx, StudentInput(name, grade));
         }
 
         return AlertDialog(
@@ -41,26 +40,30 @@ class AppDialogs {
               TextField(
                 controller: nameController,
                 autofocus: true,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => submit(),
                 decoration: const InputDecoration(
                   labelText: 'اسم الطالبة',
                   prefixIcon: Icon(Icons.person_outline),
                 ),
               ),
               const SizedBox(height: 12),
-              TextField(
-                controller: ageController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(3),
-                ],
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => submit(),
+              DropdownButtonFormField<String>(
+                initialValue: grade,
+                isExpanded: true,
                 decoration: const InputDecoration(
-                  labelText: 'العمر (اختياري)',
-                  prefixIcon: Icon(Icons.cake_outlined),
+                  labelText: 'الصف (اختياري)',
+                  prefixIcon: Icon(Icons.school_outlined),
                 ),
+                items: [
+                  const DropdownMenuItem<String>(
+                    value: null,
+                    child: Text('غير محدّد'),
+                  ),
+                  for (final g in kGrades)
+                    DropdownMenuItem<String>(value: g, child: Text(g)),
+                ],
+                onChanged: (v) => grade = v,
               ),
             ],
           ),

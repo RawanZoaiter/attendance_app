@@ -19,7 +19,7 @@ class StudentAdapter extends TypeAdapter<Student> {
     return Student(
       id: fields[0] as String,
       name: fields[1] as String,
-      age: fields[2] as int?,
+      grade: fields[3] as String?,
     );
   }
 
@@ -31,8 +31,8 @@ class StudentAdapter extends TypeAdapter<Student> {
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.age);
+      ..writeByte(3)
+      ..write(obj.grade);
   }
 
   @override

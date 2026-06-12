@@ -39,8 +39,8 @@ class HalaqaCubit extends Cubit<HalaqaState> {
     load();
   }
 
-  Future<void> addStudent(Halaqa halaqa, String name, {int? age}) async {
-    await _repo.addStudent(halaqa, name, age: age);
+  Future<void> addStudent(Halaqa halaqa, String name, {String? grade}) async {
+    await _repo.addStudent(halaqa, name, grade: grade);
     load();
   }
 
@@ -48,9 +48,9 @@ class HalaqaCubit extends Cubit<HalaqaState> {
     Halaqa halaqa,
     String studentId, {
     required String name,
-    int? age,
+    String? grade,
   }) async {
-    await _repo.editStudent(halaqa, studentId, name: name, age: age);
+    await _repo.editStudent(halaqa, studentId, name: name, grade: grade);
     load();
   }
 

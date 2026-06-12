@@ -10,9 +10,10 @@ class Student extends HiveObject {
   @HiveField(1)
   String name;
 
-  /// عمر الطالبة (اختياري — قد يكون فارغاً للطلاب القدامى قبل إضافة الحقل).
-  @HiveField(2)
-  int? age;
+  /// صف الطالبة (اختياري). مثال: "الصف الأول" ... "البكالوريا".
+  /// نستخدم رقم حقل جديد (3) حتى لا نتعارض مع بيانات العمر القديمة في الحقل 2.
+  @HiveField(3)
+  String? grade;
 
-  Student({required this.id, required this.name, this.age});
+  Student({required this.id, required this.name, this.grade});
 }
